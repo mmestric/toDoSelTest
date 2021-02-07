@@ -1,0 +1,8896 @@
+<html><head>
+	<title>Daily Todo - sZQrt</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="google-site-verification" content="gICidlFUEY13RtqwADV6Ur0OohVN5qAX53S_PqjseaY">
+	<meta content="text/html; charset=utf-8" http-equiv="content-type">
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+	<link href="/style2.css" rel="stylesheet" type="text/css">
+
+	<script type="text/javascript">
+
+	$(function () {
+	        // set timezone val - if applicable.
+		$ ('#timezone').val (new Date().getTimezoneOffset ());
+	});
+
+	</script>
+
+	
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="3600">
+
+<script type="text/javascript">
+      function allchecked () {
+      };
+
+      function check (element, val) {
+        element.hide ();
+
+        // temporary loader.
+        element.parent ().children ('.loader').show ();
+
+        // get task as plain-text
+        var task = $.trim (element.parent().parent().children ('.text').text ());
+
+        $.get ('/done', {id:'sZQrt', task:task, done:val ? 'yes' : 'no', date:'2021-02-07', timezone:new Date().getTimezoneOffset ()}, function () {
+          if (val) {
+            element.parent ().children ('.today').show ();
+            element.parent ().children ('.loader').hide ();
+            allchecked ();
+          }
+
+          else {
+            var f = element.parent ().children ('.check') 
+            f.show ();
+            f.attr ('checked', false);
+
+            element.parent ().children ('.loader').hide ();
+          }
+        });
+      };
+
+      function oldcheck (element, tdate) {
+        element.hide ();
+
+        // temporary loader.
+        element.parent ().children ('.loader').show ();
+
+        // get task as plain-text
+        var task = $.trim (element.parent().parent().children ('.text').text ());
+
+				var val = element.hasClass ('red');
+				var attr = element.attr ('title');
+
+        $.get ('/done', {id:'sZQrt', task:task, done:val ? 'yes' : 'no', date:tdate, timezone:new Date().getTimezoneOffset ()}, function () {
+          if (val) {
+            element.addClass ('green');
+            element.removeClass ('red');
+						element.attr ('title', attr.replace ('No', 'Yes'));
+          }
+
+          else {
+            element.addClass ('red');
+            element.removeClass ('green');
+						element.attr ('title', attr.replace ('Yes', 'No'));
+          }
+
+          element.parent ().children ('.loader').hide ();
+       		element.show ();
+        });
+      };
+
+      // attach click/change events.
+      $(function () {
+        $.ajaxSetup ({cache: false});
+
+        $('.check').click (function () {
+          check ($(this), true);
+        });
+
+        $('.today').click (function () {
+          check ($(this), false);
+          return false;
+        });
+
+
+
+	labelwidth = $('.tasktr td:first').width();
+	tablewidth = $('#tasktable').width();
+
+	// start trimming away columns ?
+	// keep doing so till label is at least 50% of total width ?
+	while (labelwidth < 0.5 * tablewidth) {
+		var tdcount = $('tr:first td').length;
+
+		if (tdcount < 5) {
+			break;
+		}
+
+		$('tr:first td:nth-child('+(tdcount-2)+')').remove ();
+		$('.tasktr td:nth-child('+(tdcount-2)+')').remove ();
+
+		labelwidth = $('.tasktr td:first').width();
+		tablewith = $('#tasktable').width();
+		//console.log ('.tasktr td:nth-child('+(tdcount-2)+')');
+		//break;
+	}
+
+
+        $('.older').click (function () {
+					var classes = $(this).parent ().attr ('class').split (/\s+/);
+					var datevar = '';
+
+					$.each (classes, function (index, item) {
+						if (item.substring (0, 1) == 'd') {
+							datevar = item.substring (1);
+						}
+					});
+
+          oldcheck ($(this), datevar);
+
+          return false;
+        });
+
+      });
+</script>
+
+
+</head>
+
+<body>
+
+	<h1><a href="/">DailyTodo.org</a></h1>
+
+	
+<noscript>Please turn on Javascript to use this page.</noscript>
+
+<table id="tasktable">
+<thead>
+	<tr>
+
+	<td id="headline">
+		
+			Ovo je test <a href="?edit=1">Edit</a>
+		
+	</td>
+
+	<td class="date">Today</td>
+	 <td class="date">06_Feb</td>  <td class="date">05_Feb</td>  <td class="date">04_Feb</td>  <td class="date">03_Feb</td>  <td class="date">02_Feb</td>  <td class="date">01_Feb</td> 
+	<td class="date">Older</td>
+
+	<td></td>
+
+	</tr>
+
+</thead>
+
+
+
+
+	<tbody><tr class="t1 tasktr">
+
+	<td id="t1" class="text">
+		Test
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check hide" id="check1" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today td_1" id="today1" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load1">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=0cbc6">»</a></td>
+</tr>
+ 
+
+	<tr class="t2 tasktr">
+
+	<td id="t2" class="text">
+		task	1
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check2" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today2" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		
+		 <b class="green older td_2" title="Yes on 6 Feb 2021"> ◉</b> 
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=505ff">»</a></td>
+</tr>
+ 
+
+	<tr class="t3 tasktr">
+
+	<td id="t3" class="text">
+		task	2
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check3" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today3" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=f9a22">»</a></td>
+</tr>
+ 
+
+	<tr class="t4 tasktr">
+
+	<td id="t4" class="text">
+		task	3
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check4" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today4" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=b2e57">»</a></td>
+</tr>
+ 
+
+	<tr class="t5 tasktr">
+
+	<td id="t5" class="text">
+		task	4
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check5" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today5" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=f1364">»</a></td>
+</tr>
+ 
+
+	<tr class="t6 tasktr">
+
+	<td id="t6" class="text">
+		task	5
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check6" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today6" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=5f765">»</a></td>
+</tr>
+ 
+
+	<tr class="t7 tasktr">
+
+	<td id="t7" class="text">
+		task	6
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check7" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today7" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=7de7a">»</a></td>
+</tr>
+ 
+
+	<tr class="t8 tasktr">
+
+	<td id="t8" class="text">
+		task	7
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check8" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today8" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		
+		 <b class="green older td_2" title="Yes on 6 Feb 2021"> ◉</b> 
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=62338">»</a></td>
+</tr>
+ 
+
+	<tr class="t9 tasktr">
+
+	<td id="t9" class="text">
+		task	8
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check9" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today9" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=4e312">»</a></td>
+</tr>
+ 
+
+	<tr class="t10 tasktr">
+
+	<td id="t10" class="text">
+		task	9
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check10" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today10" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=733b7">»</a></td>
+</tr>
+ 
+
+	<tr class="t11 tasktr">
+
+	<td id="t11" class="text">
+		task	10
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check11" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today11" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=35628">»</a></td>
+</tr>
+ 
+
+	<tr class="t12 tasktr">
+
+	<td id="t12" class="text">
+		task	11
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check12" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today12" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=c1509">»</a></td>
+</tr>
+ 
+
+	<tr class="t13 tasktr">
+
+	<td id="t13" class="text">
+		task	12
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check13" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today13" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=695d1">»</a></td>
+</tr>
+ 
+
+	<tr class="t14 tasktr">
+
+	<td id="t14" class="text">
+		task	13
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check14" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today14" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=20944">»</a></td>
+</tr>
+ 
+
+	<tr class="t15 tasktr">
+
+	<td id="t15" class="text">
+		task	14
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check15" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today15" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=9ea65">»</a></td>
+</tr>
+ 
+
+	<tr class="t16 tasktr">
+
+	<td id="t16" class="text">
+		task	15
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check16" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today16" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=83946">»</a></td>
+</tr>
+ 
+
+	<tr class="t17 tasktr">
+
+	<td id="t17" class="text">
+		task	16
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check17" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today17" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=ccc14">»</a></td>
+</tr>
+ 
+
+	<tr class="t18 tasktr">
+
+	<td id="t18" class="text">
+		task	17
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check18" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today18" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=d9cc7">»</a></td>
+</tr>
+ 
+
+	<tr class="t19 tasktr">
+
+	<td id="t19" class="text">
+		task	18
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check19" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today19" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=dce0a">»</a></td>
+</tr>
+ 
+
+	<tr class="t20 tasktr">
+
+	<td id="t20" class="text">
+		task	19
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check20" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today20" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=e8b2f">»</a></td>
+</tr>
+ 
+
+	<tr class="t21 tasktr">
+
+	<td id="t21" class="text">
+		task	20
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check21" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today21" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=192ea">»</a></td>
+</tr>
+ 
+
+	<tr class="t22 tasktr">
+
+	<td id="t22" class="text">
+		task	21
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check22" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today22" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=38d31">»</a></td>
+</tr>
+ 
+
+	<tr class="t23 tasktr">
+
+	<td id="t23" class="text">
+		task	22
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check23" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today23" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=9842a">»</a></td>
+</tr>
+ 
+
+	<tr class="t24 tasktr">
+
+	<td id="t24" class="text">
+		task	23
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check24" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today24" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=e6152">»</a></td>
+</tr>
+ 
+
+	<tr class="t25 tasktr">
+
+	<td id="t25" class="text">
+		task	24
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check25" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today25" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=c146c">»</a></td>
+</tr>
+ 
+
+	<tr class="t26 tasktr">
+
+	<td id="t26" class="text">
+		task	25
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check26" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today26" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=4bb77">»</a></td>
+</tr>
+ 
+
+	<tr class="t27 tasktr">
+
+	<td id="t27" class="text">
+		task	26
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check27" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today27" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=7aa94">»</a></td>
+</tr>
+ 
+
+	<tr class="t28 tasktr">
+
+	<td id="t28" class="text">
+		task	27
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check28" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today28" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=b9b7f">»</a></td>
+</tr>
+ 
+
+	<tr class="t29 tasktr">
+
+	<td id="t29" class="text">
+		task	28
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check29" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today29" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=9ce12">»</a></td>
+</tr>
+ 
+
+	<tr class="t30 tasktr">
+
+	<td id="t30" class="text">
+		task	29
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check30" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today30" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=2bcfd">»</a></td>
+</tr>
+ 
+
+	<tr class="t31 tasktr">
+
+	<td id="t31" class="text">
+		task	30
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check31" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today31" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=68b56">»</a></td>
+</tr>
+ 
+
+	<tr class="t32 tasktr">
+
+	<td id="t32" class="text">
+		task	31
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check32" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today32" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=f2cda">»</a></td>
+</tr>
+ 
+
+	<tr class="t33 tasktr">
+
+	<td id="t33" class="text">
+		task	32
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check33" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today33" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=87f53">»</a></td>
+</tr>
+ 
+
+	<tr class="t34 tasktr">
+
+	<td id="t34" class="text">
+		task	33
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check34" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today34" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=41f80">»</a></td>
+</tr>
+ 
+
+	<tr class="t35 tasktr">
+
+	<td id="t35" class="text">
+		task	34
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check35" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today35" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=80bd2">»</a></td>
+</tr>
+ 
+
+	<tr class="t36 tasktr">
+
+	<td id="t36" class="text">
+		task	35
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check36" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today36" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=13568">»</a></td>
+</tr>
+ 
+
+	<tr class="t37 tasktr">
+
+	<td id="t37" class="text">
+		task	36
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check37" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today37" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=93a54">»</a></td>
+</tr>
+ 
+
+	<tr class="t38 tasktr">
+
+	<td id="t38" class="text">
+		task	37
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check38" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today38" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=fc174">»</a></td>
+</tr>
+ 
+
+	<tr class="t39 tasktr">
+
+	<td id="t39" class="text">
+		task	38
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check39" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today39" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=93f9b">»</a></td>
+</tr>
+ 
+
+	<tr class="t40 tasktr">
+
+	<td id="t40" class="text">
+		task	39
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check40" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today40" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=0fc9c">»</a></td>
+</tr>
+ 
+
+	<tr class="t41 tasktr">
+
+	<td id="t41" class="text">
+		task	40
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check41" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today41" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=eae11">»</a></td>
+</tr>
+ 
+
+	<tr class="t42 tasktr">
+
+	<td id="t42" class="text">
+		task	41
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check42" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today42" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=4770e">»</a></td>
+</tr>
+ 
+
+	<tr class="t43 tasktr">
+
+	<td id="t43" class="text">
+		task	42
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check43" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today43" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=4be72">»</a></td>
+</tr>
+ 
+
+	<tr class="t44 tasktr">
+
+	<td id="t44" class="text">
+		task	43
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check44" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today44" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=1c3fa">»</a></td>
+</tr>
+ 
+
+	<tr class="t45 tasktr">
+
+	<td id="t45" class="text">
+		task	44
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check45" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today45" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=e5996">»</a></td>
+</tr>
+ 
+
+	<tr class="t46 tasktr">
+
+	<td id="t46" class="text">
+		task	45
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check46" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today46" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=35e0c">»</a></td>
+</tr>
+ 
+
+	<tr class="t47 tasktr">
+
+	<td id="t47" class="text">
+		task	46
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check47" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today47" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=24f17">»</a></td>
+</tr>
+ 
+
+	<tr class="t48 tasktr">
+
+	<td id="t48" class="text">
+		task	47
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check48" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today48" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=d10b3">»</a></td>
+</tr>
+ 
+
+	<tr class="t49 tasktr">
+
+	<td id="t49" class="text">
+		task	48
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check49" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today49" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=fbb76">»</a></td>
+</tr>
+ 
+
+	<tr class="t50 tasktr">
+
+	<td id="t50" class="text">
+		task	49
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check50" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today50" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=5435f">»</a></td>
+</tr>
+ 
+
+	<tr class="t51 tasktr">
+
+	<td id="t51" class="text">
+		task	50
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check51" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today51" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=baffe">»</a></td>
+</tr>
+ 
+
+	<tr class="t52 tasktr">
+
+	<td id="t52" class="text">
+		task	51
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check52" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today52" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=8a1bf">»</a></td>
+</tr>
+ 
+
+	<tr class="t53 tasktr">
+
+	<td id="t53" class="text">
+		task	52
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check53" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today53" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=c592a">»</a></td>
+</tr>
+ 
+
+	<tr class="t54 tasktr">
+
+	<td id="t54" class="text">
+		task	53
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check54" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today54" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=4f182">»</a></td>
+</tr>
+ 
+
+	<tr class="t55 tasktr">
+
+	<td id="t55" class="text">
+		task	54
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check55" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today55" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=354d2">»</a></td>
+</tr>
+ 
+
+	<tr class="t56 tasktr">
+
+	<td id="t56" class="text">
+		task	55
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check56" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today56" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=10716">»</a></td>
+</tr>
+ 
+
+	<tr class="t57 tasktr">
+
+	<td id="t57" class="text">
+		task	56
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check57" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today57" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=81924">»</a></td>
+</tr>
+ 
+
+	<tr class="t58 tasktr">
+
+	<td id="t58" class="text">
+		task	57
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check58" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today58" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=bebe9">»</a></td>
+</tr>
+ 
+
+	<tr class="t59 tasktr">
+
+	<td id="t59" class="text">
+		task	58
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check59" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today59" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=c8a61">»</a></td>
+</tr>
+ 
+
+	<tr class="t60 tasktr">
+
+	<td id="t60" class="text">
+		task	59
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check60" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today60" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=6514c">»</a></td>
+</tr>
+ 
+
+	<tr class="t61 tasktr">
+
+	<td id="t61" class="text">
+		task	60
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check61" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today61" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=716ba">»</a></td>
+</tr>
+ 
+
+	<tr class="t62 tasktr">
+
+	<td id="t62" class="text">
+		task	61
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check62" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today62" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=635cd">»</a></td>
+</tr>
+ 
+
+	<tr class="t63 tasktr">
+
+	<td id="t63" class="text">
+		task	62
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check63" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today63" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=0565d">»</a></td>
+</tr>
+ 
+
+	<tr class="t64 tasktr">
+
+	<td id="t64" class="text">
+		task	63
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check64" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today64" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=9db9b">»</a></td>
+</tr>
+ 
+
+	<tr class="t65 tasktr">
+
+	<td id="t65" class="text">
+		task	64
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check65" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today65" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=d7a4f">»</a></td>
+</tr>
+ 
+
+	<tr class="t66 tasktr">
+
+	<td id="t66" class="text">
+		task	65
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check66" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today66" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=cc5ce">»</a></td>
+</tr>
+ 
+
+	<tr class="t67 tasktr">
+
+	<td id="t67" class="text">
+		task	66
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check67" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today67" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=490a4">»</a></td>
+</tr>
+ 
+
+	<tr class="t68 tasktr">
+
+	<td id="t68" class="text">
+		task	67
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check68" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today68" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=91043">»</a></td>
+</tr>
+ 
+
+	<tr class="t69 tasktr">
+
+	<td id="t69" class="text">
+		task	68
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check69" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today69" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=58d0e">»</a></td>
+</tr>
+ 
+
+	<tr class="t70 tasktr">
+
+	<td id="t70" class="text">
+		task	69
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check70" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today70" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=8bb98">»</a></td>
+</tr>
+ 
+
+	<tr class="t71 tasktr">
+
+	<td id="t71" class="text">
+		task	70
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check71" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today71" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=46312">»</a></td>
+</tr>
+ 
+
+	<tr class="t72 tasktr">
+
+	<td id="t72" class="text">
+		task	71
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check72" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today72" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=e829a">»</a></td>
+</tr>
+ 
+
+	<tr class="t73 tasktr">
+
+	<td id="t73" class="text">
+		task	72
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check73" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today73" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=b2ed3">»</a></td>
+</tr>
+ 
+
+	<tr class="t74 tasktr">
+
+	<td id="t74" class="text">
+		task	73
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check74" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today74" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=94655">»</a></td>
+</tr>
+ 
+
+	<tr class="t75 tasktr">
+
+	<td id="t75" class="text">
+		task	74
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check75" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today75" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=b6cf1">»</a></td>
+</tr>
+ 
+
+	<tr class="t76 tasktr">
+
+	<td id="t76" class="text">
+		task	75
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check76" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today76" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=9d4e7">»</a></td>
+</tr>
+ 
+
+	<tr class="t77 tasktr">
+
+	<td id="t77" class="text">
+		task	76
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check77" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today77" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=e20f3">»</a></td>
+</tr>
+ 
+
+	<tr class="t78 tasktr">
+
+	<td id="t78" class="text">
+		task	77
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check78" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today78" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=7b026">»</a></td>
+</tr>
+ 
+
+	<tr class="t79 tasktr">
+
+	<td id="t79" class="text">
+		task	78
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check79" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today79" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=a24ec">»</a></td>
+</tr>
+ 
+
+	<tr class="t80 tasktr">
+
+	<td id="t80" class="text">
+		task	79
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check80" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today80" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=11ea2">»</a></td>
+</tr>
+ 
+
+	<tr class="t81 tasktr">
+
+	<td id="t81" class="text">
+		task	80
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check81" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today81" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=19ff2">»</a></td>
+</tr>
+ 
+
+	<tr class="t82 tasktr">
+
+	<td id="t82" class="text">
+		task	81
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check82" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today82" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=1806a">»</a></td>
+</tr>
+ 
+
+	<tr class="t83 tasktr">
+
+	<td id="t83" class="text">
+		task	82
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check83" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today83" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=d0974">»</a></td>
+</tr>
+ 
+
+	<tr class="t84 tasktr">
+
+	<td id="t84" class="text">
+		task	83
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check84" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today84" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=5beff">»</a></td>
+</tr>
+ 
+
+	<tr class="t85 tasktr">
+
+	<td id="t85" class="text">
+		task	84
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check85" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today85" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=82877">»</a></td>
+</tr>
+ 
+
+	<tr class="t86 tasktr">
+
+	<td id="t86" class="text">
+		task	85
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check86" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today86" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=7ebf4">»</a></td>
+</tr>
+ 
+
+	<tr class="t87 tasktr">
+
+	<td id="t87" class="text">
+		task	86
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check87" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today87" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=8c682">»</a></td>
+</tr>
+ 
+
+	<tr class="t88 tasktr">
+
+	<td id="t88" class="text">
+		task	87
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check88" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today88" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=64a06">»</a></td>
+</tr>
+ 
+
+	<tr class="t89 tasktr">
+
+	<td id="t89" class="text">
+		task	88
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check89" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today89" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=86c4a">»</a></td>
+</tr>
+ 
+
+	<tr class="t90 tasktr">
+
+	<td id="t90" class="text">
+		task	89
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check90" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today90" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=78c5c">»</a></td>
+</tr>
+ 
+
+	<tr class="t91 tasktr">
+
+	<td id="t91" class="text">
+		task	90
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check91" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today91" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=72f37">»</a></td>
+</tr>
+ 
+
+	<tr class="t92 tasktr">
+
+	<td id="t92" class="text">
+		task	91
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check92" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today92" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=4c650">»</a></td>
+</tr>
+ 
+
+	<tr class="t93 tasktr">
+
+	<td id="t93" class="text">
+		task	92
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check93" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today93" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=87ae4">»</a></td>
+</tr>
+ 
+
+	<tr class="t94 tasktr">
+
+	<td id="t94" class="text">
+		task	93
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check94" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today94" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=07c33">»</a></td>
+</tr>
+ 
+
+	<tr class="t95 tasktr">
+
+	<td id="t95" class="text">
+		task	94
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check95" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today95" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=f62d7">»</a></td>
+</tr>
+ 
+
+	<tr class="t96 tasktr">
+
+	<td id="t96" class="text">
+		task	95
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check96" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today96" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=54964">»</a></td>
+</tr>
+ 
+
+	<tr class="t97 tasktr">
+
+	<td id="t97" class="text">
+		task	96
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check97" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today97" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=092f8">»</a></td>
+</tr>
+ 
+
+	<tr class="t98 tasktr">
+
+	<td id="t98" class="text">
+		task	97
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check98" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today98" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		 <b class="red older td_2" title="No on 6 Feb 2021"> ● </b> 
+		
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=70e08">»</a></td>
+</tr>
+ 
+
+	<tr class="t99 tasktr">
+
+	<td id="t99" class="text">
+		task	98
+	</td>
+
+	
+
+	
+		<td class="trend current d2021-02-07">
+
+	
+		
+			<input type="checkbox" class="check" id="check99" title="Check if you've finished this task for today" autocomplete="off">
+
+			<b class="green today hide td_1" id="today99" title="Yes for today">◉</b>
+
+			<img src="/load.gif" class="loader hide" alt="load0">
+		
+
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-06">
+
+	
+		
+		 <b class="green older td_2" title="Yes on 6 Feb 2021"> ◉</b> 
+		
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-05">
+
+	
+		
+		
+		 <b class="gray td_3" title="N/A on 5 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-04">
+
+	
+		
+		
+		 <b class="gray td_4" title="N/A on 4 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-03">
+
+	
+		
+		
+		 <b class="gray td_5" title="N/A on 3 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-02">
+
+	
+		
+		
+		 <b class="gray td_6" title="N/A on 2 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+		<td class="trend  d2021-02-01">
+
+	
+		
+		
+		 <b class="gray td_7" title="N/A on 1 Feb 2021"> ● </b> 
+	
+
+  </td>
+    
+    <td class="trend more"><a href="/sZQrt?t=e230d">»</a></td>
+</tr>
+ 
+</tbody></table>
+
+
+<p id="msg">
+	<a href="#" onclick="$('#msg').hide (); return false;">Hide</a>
+	<span></span>
+</p>
+
+
+
+    <img src="https://ptmlog.appspot.com/1.gif?ref=">
+
+
+</body></html>
