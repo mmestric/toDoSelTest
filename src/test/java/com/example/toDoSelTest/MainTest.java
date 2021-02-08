@@ -8,12 +8,13 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
 
 import static com.codeborne.selenide.Condition.*;
 
@@ -24,7 +25,6 @@ public class MainTest {
     private final MainPage mainPage = new MainPage();
     private final EditPage editPage = new EditPage();
     private final OlderPage olderPage = new OlderPage();
-    private static final String TITLE_TEST ="Title Test update";
     private static final String TASK_TEST ="Test task 123";
 
     @BeforeAll
@@ -38,33 +38,76 @@ public class MainTest {
         open("https://dailytodo.org/sZQrt");
     }
 
+
+
+
+
     /**
      * Simple test to check if the title is being saved correctly
+     * Additionally this tests demonstrates a simple DDT principle where the test data is in a separate .CSV file.
+     * It is possible to use JSON,XML or any other file type, although the CSV is a common filetype since it can be used for both manual and automatic testing
      *
-     * The test will clear the current title and replace it with the one defined in TITLE_TEST
-     * Possible to test the negative scenario, replace title with the 1501 char long one from the test documentation
+     * The test will clear the current title and replace it with the one defined in test1Title.csv file
+     * As currently configured the test will also fail since it contains the negative scenario with 1501 characters in the title
      *
-     * Additionally will break if title not saved or saved correctly
+     * The test will break if title not saved or saved correctly, or if the server throws an error (one of the scenarios)
+     *
      */
     @Test
     public void titleChange() {
-        mainPage.editButton.click();
+        String fileName = "test1Title.csv";
+        File file = new File(fileName);
+        List<List<String>> testData = new ArrayList<>();
 
-        $(byName("title")).clear();
-        $(byName("title")).sendKeys(TITLE_TEST);
+        Scanner inputStream;
+
+        //reading hte file
+        try{
+            inputStream = new Scanner(file);
+
+            while (inputStream.hasNext()){
+                String line = inputStream.nextLine();
+                String[] values = line.split(",");
+
+                testData.add(Arrays.asList(values));
+            }
+
+            inputStream.close();
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
 
 
-        editPage.editSaveButton.click();
-        String headlineText = $(byId("headline")).getText();
-        //System.out.println(headlineText.equals(TITLE_TEST +" Edit"));
+        int pos;
+        String[] tmpTestValue = {"test data", "expected result"};
+        for(List<String> line: testData) {
 
-        //Final test on the title on the main page, should have TEXT used since the headline element will also contain the Edit text
-        $(byId("headline")).shouldHave(text(TITLE_TEST));
+            pos = 0;
+            for (String value: line) {
+                tmpTestValue[pos]=value;
+                pos++;
+            }
+
+            //System.out.println("Test data: " + tmpTestValue[0] + " , target value: " + tmpTestValue[1]);
+
+            mainPage.editButton.click();
+
+            $(byName("title")).clear();
+            $(byName("title")).sendKeys(tmpTestValue[0]);
+
+
+            editPage.editSaveButton.click();
+            String headlineText = $(byId("headline")).getText();
+
+            //Final test on the title on the main page, should have TEXT used since the headline element will also contain the Edit text
+            $(byId("headline")).shouldHave(text(tmpTestValue[1]));
+        }
+
     }
 
 
     /**
-     * Test adds a new task to the top of the list with the task name defined in TASK_TEST
+     * Test adds a new task to the top of the list with the task name defined in TASK_TEST (did not run a second example test with an external test data file)
      * When added the new task is placed on the t1 position, test will confirm the correct text
      *
      * Once done test runs cleanup
@@ -118,6 +161,10 @@ public class MainTest {
         tmp = new SimpleDateFormat("d MMM yyyy", Locale.ENGLISH).format(date.getTime());
         todayTarget+= tmp;
 
+        //catching a potential fail of the test without breaking execution
+        SoftAssert softAssert = new SoftAssert();
+
+
         //click the checkbox
         $(byId("check1")).click();
 
@@ -138,12 +185,13 @@ public class MainTest {
         //System.out.println("today target: " + todayTarget);
 
 
-        //check if the target exists, attempting to click non existing will break
+        //check if the target exists, if element does not exist the soft assert should mark this test as failed and continue (if full break is required regular assert can be used, or click)
         if ($(byXpath("//*[contains(@title,'" + todayTarget + "')]")).exists())
-            System.out.println("postoji element ");
+            System.out.println("element exists");
         else {
-            System.out.println("ne postoji element");
-            $(byXpath("//*[contains(@title,'" + todayTarget + "')]")).click();
+            System.out.println("element does not exist");
+            softAssert.fail("nonExisting element");
+            //$(byXpath("//*[contains(@title,'" + todayTarget + "')]")).click();
         }
 
         //back to main page
