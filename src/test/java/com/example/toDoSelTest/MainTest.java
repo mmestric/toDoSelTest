@@ -3,12 +3,10 @@ package com.example.toDoSelTest;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
 import java.io.File;
@@ -16,10 +14,11 @@ import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.codeborne.selenide.Condition.*;
-
+import static com.codeborne.selenide.Condition.exactText;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.*;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 
 public class MainTest {
     private final MainPage mainPage = new MainPage();
@@ -61,7 +60,7 @@ public class MainTest {
 
         Scanner inputStream;
 
-        //reading hte file
+        //reading the file
         try{
             inputStream = new Scanner(file);
 
@@ -88,7 +87,6 @@ public class MainTest {
                 pos++;
             }
 
-            //System.out.println("Test data: " + tmpTestValue[0] + " , target value: " + tmpTestValue[1]);
 
             mainPage.editButton.click();
 
